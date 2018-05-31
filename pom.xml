@@ -57,6 +57,8 @@
         <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
         <kotlin.version>1.1.60</kotlin.version>
         <dokka.version>0.9.13</dokka.version>
+        <surfire.version>2.19.1</surfire.version>
+        <spek.version>1.1.5</spek.version>
     </properties>
 
     <repositories>
@@ -159,6 +161,17 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surfire.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Spec.*</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -174,6 +187,20 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>org.jetbrains.spek</groupId>
+            <artifactId>spek-api</artifactId>
+            <version>${spek.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.spek</groupId>
+            <artifactId>spek-junit-platform-engine</artifactId>
+            <version>${spek.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
 </project>
