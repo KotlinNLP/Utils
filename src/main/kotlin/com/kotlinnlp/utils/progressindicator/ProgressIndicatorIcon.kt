@@ -30,7 +30,7 @@ class ProgressIndicatorIcon(total: Int, outputStream: OutputStream = System.out)
    *
    * @return a string with the current progress indicator
    */
-  override fun getProgressString(): String {
+  override fun buildProgressString(): String {
 
     val printStr = "${iconSequence[this.iconIndex]}"
     this.iconIndex = (this.iconIndex + 1) % iconSequence.size

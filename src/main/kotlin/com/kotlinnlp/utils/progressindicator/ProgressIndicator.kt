@@ -52,7 +52,7 @@ abstract class ProgressIndicator(protected val total: Int, protected val outputS
   private fun print() {
 
     this.outputStream.write("\r%s%s".format(
-      this.getProgressString(),
+      this.buildProgressString(),
       if (this.perc == 100) "\n" else "").toByteArray())
 
     this.outputStream.flush()
@@ -63,5 +63,5 @@ abstract class ProgressIndicator(protected val total: Int, protected val outputS
    *
    * @return a string with the current progress indicator
    */
-  protected abstract fun getProgressString(): String
+  protected abstract fun buildProgressString(): String
 }

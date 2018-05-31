@@ -20,5 +20,5 @@ class ProgressIndicatorPercentage(total: Int, outputStream: OutputStream = Syste
    *
    * @return a string with the current progress indicator
    */
-  override fun getProgressString(): String = "[${this.perc}%]"
+  override fun buildProgressString(): String = "[${this.perc}%]"
 }
