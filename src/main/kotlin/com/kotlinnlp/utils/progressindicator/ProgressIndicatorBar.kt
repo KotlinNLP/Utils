@@ -10,13 +10,15 @@ package com.kotlinnlp.utils.progressindicator
 import java.io.OutputStream
 
 /**
- *
+ * Helper that tracks a progress indicating it with a increasing bar.
  */
 class ProgressIndicatorBar(total: Int, outputStream: OutputStream = System.out, val barLength: Int = 50)
   : ProgressIndicator(total = total, outputStream = outputStream) {
 
   /**
+   * Build the current progress string.
    *
+   * @return a string with the current progress indicator
    */
   override fun getProgressString(): String {
 

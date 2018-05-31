@@ -10,13 +10,15 @@ package com.kotlinnlp.utils.progressindicator
 import java.io.OutputStream
 
 /**
- *
+ * Helper that tracks a progress indicating it with simple percentage.
  */
 class ProgressIndicatorPercentage(total: Int, outputStream: OutputStream = System.out)
   : ProgressIndicator(total = total, outputStream = outputStream) {
 
   /**
+   * Build the current progress string.
    *
+   * @return a string with the current progress indicator
    */
   override fun getProgressString(): String = "[${this.perc}%]"
 }

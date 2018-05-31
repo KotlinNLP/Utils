@@ -11,22 +11,28 @@ import java.io.OutputStream
 import java.lang.Math.floor
 
 /**
+ * Used to implement a helper that tracks a progress.
  *
+ * @param total the total amount of iterable elements to track
+ * @param outputStream the stream into which the output will be written
  */
 abstract class ProgressIndicator(protected val total: Int, protected val outputStream: OutputStream) {
 
   /**
-   *
+   * The current amount of progress units.
    */
   private var current: Int = 0
 
   /**
-   *
+   * The current percentage of the progress (as int in the range [-1, 100]).
+   * -1 is the initialization value.
    */
   protected var perc: Int = -1
 
   /**
+   * Advance the progress by a given amount of units and update the indicator.
    *
+   * @param amount the amount of units to add to the progress
    */
   fun tick(amount: Int = 1) {
 
@@ -41,19 +47,21 @@ abstract class ProgressIndicator(protected val total: Int, protected val outputS
   }
 
   /**
-   *
+   * Update the indicator writing in the [outputStream].
    */
   private fun print() {
 
-    outputStream.write("\r%s%s".format(
+    this.outputStream.write("\r%s%s".format(
       this.getProgressString(),
       if (this.perc == 100) "\n" else "").toByteArray())
 
-    outputStream.flush()
+    this.outputStream.flush()
   }
 
   /**
+   * Build the current progress string.
    *
+   * @return a string with the current progress indicator
    */
   protected abstract fun getProgressString(): String
 }
