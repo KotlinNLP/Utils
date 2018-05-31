@@ -38,7 +38,7 @@ val progress = ProgressIndicatorBar(1000)
   Thread.sleep(10)
 }
 ```
-Try some examples running the files in the `examples` folder.
+Try some examples running the files in the `examples/progressindicator` folder.
 
 
 ## License
