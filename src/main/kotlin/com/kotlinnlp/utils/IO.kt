@@ -62,8 +62,3 @@ fun getLinesCount(filename: String): Int {
 
   return count
 }
-
-/**
- * @return this [String] converted to an [InputStream]
- */
-fun String.toInputStream(): InputStream = ByteArrayInputStream(this.toByteArray())
