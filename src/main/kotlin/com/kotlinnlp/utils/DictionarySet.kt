@@ -73,7 +73,7 @@ class DictionarySet<T> : Serializable {
     this.elementsMultiset.add(element)
 
     if (element !in this.elementsBiMap) {
-      this.elementsBiMap.put(key = element, value = this.elementsMultiset.elementSet().size - 1)
+      this.elementsBiMap[element] = this.elementsMultiset.elementSet().size - 1
     }
   }
 
@@ -122,12 +122,12 @@ class DictionarySet<T> : Serializable {
   /**
    * @return a set of the elements in the dictionary, sorted by ascending order of occurrences
    */
-  fun getElementsSortedSet(): Set<T>
-    = this.elementsMultiset.elementSet().sortedBy { this.getCount(it) }.toSet()
+  fun getElementsSortedSet(): Set<T> =
+    this.elementsMultiset.elementSet().sortedBy { this.getCount(it) }.toSet()
 
   /**
    * @return a set of the elements in the dictionary, sorted by descending order of occurrences
    */
-  fun getElementsReversedSet(): Set<T>
-    = this.elementsMultiset.elementSet().sortedByDescending { this.getCount(it) }.toSet()
+  fun getElementsReversedSet(): Set<T> =
+    this.elementsMultiset.elementSet().sortedByDescending { this.getCount(it) }.toSet()
 }
