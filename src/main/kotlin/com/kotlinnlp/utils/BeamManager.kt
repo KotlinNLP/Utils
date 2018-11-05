@@ -63,6 +63,11 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
     abstract val score: Double
 
     /**
+     * The elements of this state associated by id.
+     */
+    private val elementsById: Map<Int, StateElement<ValueType>> by lazy { this.elements.associateBy { it.id } }
+
+    /**
      * Fork this states into more, each built replacing the value of an element with the following in the
      * [scoresDiffMap].
      *
@@ -116,6 +121,13 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
 
       return true
     }
+
+    /**
+     * @param id the id of an element of this state
+     *
+     * @return the element with the given id
+     */
+    protected fun getElement(id: Int): StateElement<ValueType> = this.elementsById.getValue(id)
 
     /**
      * Replace an element of this list at a given index with another returning a new list.
