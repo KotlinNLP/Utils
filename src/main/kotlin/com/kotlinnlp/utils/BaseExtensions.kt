@@ -19,9 +19,17 @@ fun <T> List<T>.replace(index: Int, elm: T): List<T> =
   this.mapIndexed { i, it ->  if (i == index) elm else it }
 
 /**
- * @param callback a callback that returns a list
+ * @param callback a callback that returns a collection
  *
- * @return this list if it is not empty, otherwise the value returned by the callback
+ * @return this collection if it is not empty, otherwise the value returned by the callback
  */
-fun <T> List<T>.notEmptyOr(callback: () -> List<T>): List<T> =
+fun <T, C : Collection<T>> C.notEmptyOr(callback: () -> C): C =
+  if (this.isNotEmpty()) this else callback()
+
+/**
+ * @param callback a callback that returns a map
+ *
+ * @return this map if it is not empty, otherwise the value returned by the callback
+ */
+fun <K, V, M : Map<K, V>> M.notEmptyOr(callback: () -> M): M =
   if (this.isNotEmpty()) this else callback()
