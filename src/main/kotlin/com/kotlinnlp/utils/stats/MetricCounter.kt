@@ -13,22 +13,22 @@ package com.kotlinnlp.utils.stats
 class MetricCounter {
 
   /**
-   * The number of true positive results.
+   * The number of true positive results (correctly marked as positive).
    */
   var truePos: Int = 0
 
   /**
-   * The number of false positive results.
+   * The number of false positive results (that should have been negative).
    */
   var falsePos: Int = 0
 
   /**
-   * The number of true negative results.
+   * The number of true negative results (correctly marked as negative).
    */
   var trueNeg: Int = 0
 
   /**
-   * The number of false negative results.
+   * The number of false negative results (that should have been positive).
    */
   var falseNeg: Int = 0
 
@@ -38,7 +38,7 @@ class MetricCounter {
   val total: Int get() = truePos + falsePos + trueNeg + falseNeg
 
   /**
-   * The number of relevant results.
+   * The number of relevant results (that are intended to be actually positive).
    */
   val relevant: Int get() = truePos + falseNeg
 
