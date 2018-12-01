@@ -52,4 +52,13 @@ class MetricCounter {
    */
   override fun toString(): String = "precision %5.2f %% | recall %5.2f %% | f1 %5.2f %%"
     .format(100 * precision, 100 * recall, 100 * f1Score)
+
+  /**
+   * Reset all the counters.
+   */
+  fun reset() {
+    this.truePos = 0
+    this.falsePos = 0
+    this.falseNeg = 0
+  }
 }
