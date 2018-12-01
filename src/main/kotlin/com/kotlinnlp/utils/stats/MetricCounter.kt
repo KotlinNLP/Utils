@@ -38,6 +38,11 @@ class MetricCounter {
   val total: Int get() = truePos + falsePos + trueNeg + falseNeg
 
   /**
+   * The number of correct results.
+   */
+  val correct: Int get() = truePos + falseNeg
+
+  /**
    * The precision statistic.
    */
   val precision: Double get() = truePos.toDouble() / (truePos + falsePos)
@@ -45,7 +50,7 @@ class MetricCounter {
   /**
    * The recall statistic.
    */
-  val recall: Double get() = truePos.toDouble() / (truePos + falseNeg)
+  val recall: Double get() = truePos.toDouble() / correct
 
   /**
    * The f1 score statistic.
