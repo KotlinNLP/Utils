@@ -23,19 +23,9 @@ class MetricCounter {
   var falsePos: Int = 0
 
   /**
-   * The number of true negative results (correctly marked as negative).
-   */
-  var trueNeg: Int = 0
-
-  /**
    * The number of false negative results (that should have been positive).
    */
   var falseNeg: Int = 0
-
-  /**
-   * The total amount of results.
-   */
-  val total: Int get() = truePos + falsePos + trueNeg + falseNeg
 
   /**
    * The number of relevant results (that are intended to be actually positive).
