@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * ------------------------------------------------------------------*/
 
-package com.kotlinnlp.utils
+package com.kotlinnlp.utils.stats
 
 /**
  * A single statistic metric.
