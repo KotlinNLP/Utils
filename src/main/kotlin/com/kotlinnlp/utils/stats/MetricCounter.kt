@@ -50,6 +50,6 @@ class MetricCounter {
   /**
    * @return the string representation of the statistic metrics
    */
-  override fun toString(): String = "precision: %5.2f %% recall: %5.2f %% f1: %5.2f %%"
+  override fun toString(): String = "precision %5.2f %% | recall %5.2f %% | f1 %5.2f %%"
     .format(100 * precision, 100 * recall, 100 * f1Score)
 }
