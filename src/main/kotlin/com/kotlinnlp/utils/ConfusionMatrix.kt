@@ -27,20 +27,32 @@ class ConfusionMatrix(val labels: List<String>) {
   val size: Int = this.labels.size
 
   /**
+   * The maximum length of the labels.
+   */
+  private val maxLabelLength: Int = this.labels.maxBy { it.length }!!.length
+
+  /**
    * The length of the formatted labels.
    * The minimum value is equal to the length of the formatted percentage (%5.1f%%).
    */
-  private val formattedLabelLength: Int = minOf(6, this.labels.maxBy { it.length }!!.length)
+  private val formattedLabelLength: Int = maxOf(6, this.maxLabelLength)
 
   /**
-   * The labels centered in strings with the same [formattedLabelLength].
+   * A string with length equal to [maxLabelLength] and composed only by spaces.
    */
-  private val centeredLabels: List<String> = this.labels.map { it.center(this.formattedLabelLength) }
+  private val emptyLabel: String = " ".repeat(this.maxLabelLength)
 
   /**
-   * A string with the [formattedLabelLength] composed only by spaces.
+   * The headers of the table.
+   * They are the labels centered in strings with the same length, equal to [formattedLabelLength].
    */
-  private val emptyLabel: String = " %s | ".format(" ".repeat(this.formattedLabelLength))
+  private val headers: List<String> = listOf(emptyLabel) + this.labels.map { it.center(this.formattedLabelLength) }
+
+  /**
+   * The starting label of each row.
+   * They are the labels centered in strings with the same length, equal to [maxLabelLength].
+   */
+  private val rowLabels: List<String> = this.labels.map { it.center(this.maxLabelLength) }
 
   /**
    * The confusion matrix data.
@@ -69,13 +81,11 @@ class ConfusionMatrix(val labels: List<String>) {
    */
   override fun toString(): String {
 
-    var str = this.centeredLabels.joinToString(
-      prefix = this.emptyLabel,
-      separator = " | ",
-      postfix = " ")
+    val header = this.headers.joinToString(prefix = " ", separator = " | ", postfix = " ")
+    var str = header
 
     str += "\n"
-    str += "-".repeat(this.formattedLabelLength * (this.size + 1) + 3 * this.size + 1)
+    str += "-".repeat(header.length)
     str += "\n"
 
     str += (0 until this.size).joinToString(
@@ -87,7 +97,7 @@ class ConfusionMatrix(val labels: List<String>) {
         if (rowSum > 0) normRow.indices.forEach { normRow[it] = normRow[it] / rowSum }
 
         (0 until this.size).joinToString(
-          prefix = " %s | ".format(this.centeredLabels[i]),
+          prefix = " ${this.rowLabels[i]} | ",
           transform = { j -> "%5.1f%%".format(100.0 * normRow[j]) },
           separator = " | ",
           postfix = " ")
@@ -104,8 +114,9 @@ class ConfusionMatrix(val labels: List<String>) {
    */
   private fun String.center(width: Int): String {
 
-    val nextPaddingLength: Int = width / 2
-    val prevPaddingLength: Int = width - nextPaddingLength
+    val totalPaddingLength: Int = width - this.length
+    val nextPaddingLength: Int = totalPaddingLength / 2
+    val prevPaddingLength: Int = totalPaddingLength - nextPaddingLength
 
     return " ".repeat(prevPaddingLength) + this + " ".repeat(nextPaddingLength)
   }
