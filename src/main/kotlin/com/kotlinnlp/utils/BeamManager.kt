@@ -250,7 +250,9 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
       this.beam.retainAll { it.isValid } // invalid states are no more allowed -> remove them from the beam
     }
 
-    return this.getAllowedStates(forkedStates).map { this.addNewState(it) }.any { it }
+    val statesAdded: List<Boolean> = this.getAllowedStates(forkedStates).map { this.addNewState(it) }.toList()
+
+    return statesAdded.any { it }
   }
 
   /**
@@ -262,7 +264,8 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
     if (this.validStatesOnly) states.asSequence().filter { it.isValid } else states.asSequence()
 
   /**
-   * Add a new state (if possible) into the beam.
+   * Try to add a new state into the beam.
+   * If the beam is full the state is added only if its score is higher than the last state in the beam.
    *
    * @param state the new state to add
    *
