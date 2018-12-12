@@ -250,7 +250,7 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
       this.beam.retainAll { it.isValid } // invalid states are no more allowed -> remove them from the beam
     }
 
-    return this.getAllowedStates(forkedStates).asSequence().map { this.addNewState(it) }.any { it }
+    return this.getAllowedStates(forkedStates).map { this.addNewState(it) }.any { it }
   }
 
   /**
@@ -258,8 +258,8 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    *
    * @return the states that are allowed to enter the beam
    */
-  private fun getAllowedStates(states: List<StateType>): List<StateType> =
-    if (this.validStatesOnly) states.filter { it.isValid } else states
+  private fun getAllowedStates(states: List<StateType>): Sequence<StateType> =
+    if (this.validStatesOnly) states.asSequence().filter { it.isValid } else states.asSequence()
 
   /**
    * Add a new state (if possible) into the beam.
