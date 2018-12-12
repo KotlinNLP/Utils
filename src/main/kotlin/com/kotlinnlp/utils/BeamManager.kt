@@ -250,9 +250,10 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
       this.beam.retainAll { it.isValid } // invalid states are no more allowed -> remove them from the beam
     }
 
+    // Note: the 'toList()' method is called to iterate all the sequence.
     val statesAdded: List<Boolean> = this.getAllowedStates(forkedStates).map { this.addNewState(it) }.toList()
 
-    return statesAdded.any { it }
+    return statesAdded.any()
   }
 
   /**
