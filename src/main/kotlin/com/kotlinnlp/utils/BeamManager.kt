@@ -30,7 +30,7 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    * @property value the value of this element
    * @property index the index of the value within the possible values of this element
    */
-  data class StateElement<T: Value>(val id: Int, val value: T, val index: Int)
+  data class StateElement<T: Value>(val id: Int, val value: T, internal val index: Int)
 
   /**
    * The possible value of an element.
