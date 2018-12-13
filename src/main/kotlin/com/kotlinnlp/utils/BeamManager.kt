@@ -168,6 +168,13 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
   private var validStatesOnly = false
 
   /**
+   * Check elements ids.
+   */
+  init {
+    require(this.valuesMap.keys.all { it > 0 }) { "The ids of the elements must be positive numbers." }
+  }
+
+  /**
    * Find the best (eventually valid) configuration of elements, with the highest global score.
    *
    * @param onlyValid whether to return only valid configurations (default = true)
@@ -294,12 +301,15 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
   }
 
   /**
-   * Note: a lower score difference means a greater ambiguity
+   * Sort state elements by the ambiguity of their current value with the next.
+   * The elements with the last possible value are put to the end of the list and sorted by id.
+   *
+   * Note: a lower score difference means a greater ambiguity.
    *
    * @return a new list with the values sorted by descending ambiguity.
    */
   private fun <T: Value> List<StateElement<T>>.sortedByAmbiguity(): List<StateElement<T>> =
-    this.sortedBy { elm -> scoresDiffMap.getValue(elm.id).getOrElse(elm.index) { 1.0 } }
+    this.sortedBy { elm -> scoresDiffMap.getValue(elm.id).getOrElse(elm.index) { 1.0 + elm.id } }
 
   /**
    * Remove the last element of the list.
