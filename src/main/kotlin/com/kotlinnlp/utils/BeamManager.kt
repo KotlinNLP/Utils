@@ -171,7 +171,7 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    * Check elements ids.
    */
   init {
-    require(this.valuesMap.keys.all { it > 0 }) { "The ids of the elements must be positive numbers." }
+    require(this.valuesMap.keys.all { it >= 0 }) { "The ids of the elements must be non-negative integers." }
   }
 
   /**
