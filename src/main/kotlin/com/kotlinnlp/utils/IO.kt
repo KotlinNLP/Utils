@@ -8,18 +8,17 @@
 package com.kotlinnlp.utils
 
 import java.io.FileInputStream
+import java.io.InputStream
 import java.util.*
 
 /**
- * Iterate over the lines of a file.
+ * Iterate over the lines of this input stream.
  *
- * @param filename the name of the file
  * @param callback the callback called for each line
  */
-fun forEachLine(filename: String, callback: (String) -> Unit) {
+fun InputStream.forEachLine(callback: (String) -> Unit) {
 
-  val inputStream = FileInputStream(filename)
-  val sc = Scanner(inputStream)
+  val sc = Scanner(this)
 
   while (sc.hasNextLine()) {
     callback(sc.nextLine())
@@ -29,8 +28,18 @@ fun forEachLine(filename: String, callback: (String) -> Unit) {
     throw sc.ioException()
   }
 
-  inputStream.close()
+  this.close()
   sc.close()
+}
+
+/**
+ * Iterate over the lines of a file.
+ *
+ * @param filename the name of the file
+ * @param callback the callback called for each line
+ */
+fun forEachLine(filename: String, callback: (String) -> Unit) {
+  FileInputStream(filename).forEachLine(callback)
 }
 
 /**
