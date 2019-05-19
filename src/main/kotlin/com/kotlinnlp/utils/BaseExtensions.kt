@@ -7,6 +7,8 @@
 
 package com.kotlinnlp.utils
 
+import java.nio.charset.Charset
+
 /**
  * Copy this list replacing the element at a given index.
  *
@@ -33,3 +35,31 @@ fun <T, C : Collection<T>> C.notEmptyOr(callback: () -> C): C =
  */
 fun <K, V, M : Map<K, V>> M.notEmptyOr(callback: () -> M): M =
   if (this.isNotEmpty()) this else callback()
+
+/**
+ * Returns the combinations of the elements in this list as a list of pairs.
+ *
+ * The returned list is empty if this collection contains less than two elements.
+ *
+ * @return the combinations of the elements
+ */
+fun <T>List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) { i, acc, element ->
+
+  for (j in i + 1 until this.size) {
+    acc.add(Pair(element, this[j]))
+  }
+
+  acc
+}
+
+/**
+ * Returns a list containing all elements of the this list and, if not null, all the [other] elements.
+ *
+ * @param other the elements to concatenate (can be null)
+ */
+fun <T> List<T>.concat(other: List<T>?): List<T> = other?.let { this.plus(it) } ?: this
+
+/**
+ * Encodes the contents of this string using the specified character set and returns the resulting byte list.
+ */
+fun String.toByteList(charset: Charset = Charsets.UTF_8) = this.toByteArray(charset).toList()
