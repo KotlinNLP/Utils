@@ -21,6 +21,18 @@ fun <T> List<T>.replace(index: Int, elm: T): List<T> =
   this.mapIndexed { i, it ->  if (i == index) elm else it }
 
 /**
+ * Remove the elements from this list from the given index.
+ *
+ * @param fromIndex the index from which to remove items
+ *
+ * @return the list without element after the index
+ */
+fun <T>MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
+  this.subList(fromIndex, this.size).clear()
+  return this
+}
+
+/**
  * @param callback a callback that returns a collection
  *
  * @return this collection if it is not empty, otherwise the value returned by the callback
