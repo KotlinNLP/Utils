@@ -27,10 +27,18 @@ fun <T> List<T>.replace(index: Int, elm: T): List<T> =
  *
  * @return the list without element after the index
  */
-fun <T>MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
+fun <T> MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
   this.subList(fromIndex, this.size).clear()
   return this
 }
+
+/**
+ * Removes an element at the position of the first element that matches the given [predicate].
+ *
+ * @return the element that has been removed.
+ */
+private fun <T> MutableList<T>.removeAtIndexOfFirst(predicate: (T) -> Boolean)
+  = this.removeAt(this.indexOfFirst(predicate))
 
 /**
  * @param callback a callback that returns a collection
