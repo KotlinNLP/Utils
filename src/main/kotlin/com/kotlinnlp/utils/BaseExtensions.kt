@@ -37,7 +37,7 @@ fun <T> MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
  *
  * @return the element that has been removed.
  */
-private fun <T> MutableList<T>.removeAtIndexOfFirst(predicate: (T) -> Boolean)
+fun <T> MutableList<T>.removeAtIndexOfFirst(predicate: (T) -> Boolean)
   = this.removeAt(this.indexOfFirst(predicate))
 
 /**
