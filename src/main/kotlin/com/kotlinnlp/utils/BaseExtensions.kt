@@ -83,3 +83,15 @@ fun <T> List<T>.concat(other: List<T>?): List<T> = other?.let { this.plus(it) } 
  * Encodes the contents of this string using the specified character set and returns the resulting byte list.
  */
 fun String.toByteList(charset: Charset = Charsets.UTF_8) = this.toByteArray(charset).toList()
+
+/**
+ * Return the number with the specified number of decimals.
+ *
+ * @param numDecimalPlaces the number of decimals
+ *
+ * @return the number with the specified number of decimals
+ */
+fun Double.toFixed(numDecimalPlaces: Int): Double {
+  val factor = Math.pow(10.0, numDecimalPlaces.toDouble())
+  return Math.round(this * factor) / factor
+}
