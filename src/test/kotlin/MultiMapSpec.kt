@@ -6,10 +6,8 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.utils.MultiMap
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
@@ -37,7 +35,7 @@ class MultiMapSpec : Spek({
       Pair(6, group2)
     ))
 
-    on("get()") {
+    context("get()") {
 
       it("should return null if getting a not existing first level key") {
         assertNull(multimap[2])
@@ -64,7 +62,7 @@ class MultiMapSpec : Spek({
       }
     }
 
-    on("getValue()") {
+    context("getValue()") {
 
       it("should throw an exception if getting a not existing second level key") {
         assertFailsWith<KotlinNullPointerException> { multimap.getValue(5, 8) }
@@ -79,7 +77,7 @@ class MultiMapSpec : Spek({
       }
     }
 
-    on("forEach()") {
+    context("forEach()") {
 
       it("should loop over all the elements") {
 
@@ -98,7 +96,7 @@ class MultiMapSpec : Spek({
       }
     }
 
-    on("map()") {
+    context("map()") {
 
       val returnedMultimap = multimap.map { _, _, elm -> elm + 10}
 
@@ -119,7 +117,7 @@ class MultiMapSpec : Spek({
       }
     }
 
-    on("toString()") {
+    context("toString()") {
 
       it("should return the expected string representation") {
         assertEquals("""

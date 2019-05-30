@@ -6,11 +6,8 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.utils.progressindicator.*
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.context
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import java.io.ByteArrayOutputStream
 import kotlin.test.assertEquals
 
@@ -21,12 +18,12 @@ class ProgressIndicatorSpec: Spek({
 
   describe("a ProgressIndicatorBar") {
 
-    context("total = 10, barLength = default (50)") {
+    describe("total = 10, barLength = default (50)") {
 
       val outputStream = ByteArrayOutputStream()
       val progress = ProgressIndicatorBar(total = 10, outputStream = outputStream)
 
-      on("first tick") {
+      context("first tick") {
 
         progress.tick()
 
@@ -38,12 +35,12 @@ class ProgressIndicatorSpec: Spek({
       }
     }
 
-    context("total = 10, barLength = 20") {
+    describe("total = 10, barLength = 20") {
 
-      val outputStream = ByteArrayOutputStream()
-      val progress = ProgressIndicatorBar(total = 10, outputStream = outputStream, barLength = 20)
+      context("first tick") {
 
-      on("first tick") {
+        val outputStream = ByteArrayOutputStream()
+        val progress = ProgressIndicatorBar(total = 10, outputStream = outputStream, barLength = 20)
 
         progress.tick()
 
@@ -52,14 +49,18 @@ class ProgressIndicatorSpec: Spek({
         }
       }
 
-      on("second tick") {
+      context("second tick") {
 
+        val outputStream = ByteArrayOutputStream()
+        val progress = ProgressIndicatorBar(total = 10, outputStream = outputStream, barLength = 20)
+
+        progress.tick()
         progress.tick()
 
         it("should print the expected string") {
           assertEquals(
             "\r|██                  | 10%" +
-            "\r|████                | 20%",
+              "\r|████                | 20%",
             String(outputStream.toByteArray()))
         }
       }
@@ -68,10 +69,10 @@ class ProgressIndicatorSpec: Spek({
 
   describe("a ProgressIndicatorPercentage") {
 
-    val outputStream = ByteArrayOutputStream()
-    val progress = ProgressIndicatorPercentage(total = 10, outputStream = outputStream)
+    context("first tick") {
 
-    on("first tick") {
+      val outputStream = ByteArrayOutputStream()
+      val progress = ProgressIndicatorPercentage(total = 10, outputStream = outputStream)
 
       progress.tick()
 
@@ -80,22 +81,25 @@ class ProgressIndicatorSpec: Spek({
       }
     }
 
-    on("last tick") {
+    context("last tick") {
 
-      (1 until 10).forEach({ progress.tick() })
+      val outputStream = ByteArrayOutputStream()
+      val progress = ProgressIndicatorPercentage(total = 10, outputStream = outputStream)
+
+      repeat(10) { progress.tick() }
 
       it("should print the expected string") {
         assertEquals(
           "\r[10%]" +
-          "\r[20%]" +
-          "\r[30%]" +
-          "\r[40%]" +
-          "\r[50%]" +
-          "\r[60%]" +
-          "\r[70%]" +
-          "\r[80%]" +
-          "\r[90%]" +
-          "\r[100%]\n",
+            "\r[20%]" +
+            "\r[30%]" +
+            "\r[40%]" +
+            "\r[50%]" +
+            "\r[60%]" +
+            "\r[70%]" +
+            "\r[80%]" +
+            "\r[90%]" +
+            "\r[100%]\n",
           String(outputStream.toByteArray()))
       }
     }
@@ -103,10 +107,10 @@ class ProgressIndicatorSpec: Spek({
 
   describe("a ProgressIndicatorIcon") {
 
-    val outputStream = ByteArrayOutputStream()
-    val progress = ProgressIndicatorIcon(total = 10, outputStream = outputStream)
+    context("first tick") {
 
-    on("first tick") {
+      val outputStream = ByteArrayOutputStream()
+      val progress = ProgressIndicatorIcon(total = 10, outputStream = outputStream)
 
       progress.tick()
 
@@ -115,34 +119,41 @@ class ProgressIndicatorSpec: Spek({
       }
     }
 
-    on("second tick") {
+    context("second tick") {
 
+      val outputStream = ByteArrayOutputStream()
+      val progress = ProgressIndicatorIcon(total = 10, outputStream = outputStream)
+
+      progress.tick()
       progress.tick()
 
       it("should print the expected string") {
         assertEquals(
           "\r-" +
-          "\r\\",
+            "\r\\",
           String(outputStream.toByteArray()))
       }
     }
 
-    on("last tick") {
+    context("last tick") {
 
-      (2 until 10).forEach({ progress.tick() })
+      val outputStream = ByteArrayOutputStream()
+      val progress = ProgressIndicatorIcon(total = 10, outputStream = outputStream)
+
+      repeat(10) { progress.tick() }
 
       it("should print the expected string") {
         assertEquals(
           "\r-" +
-          "\r\\" +
-          "\r|" +
-          "\r/" +
-          "\r-" +
-          "\r\\" +
-          "\r|" +
-          "\r/" +
-          "\r-" +
-          "\r\\\n"
+            "\r\\" +
+            "\r|" +
+            "\r/" +
+            "\r-" +
+            "\r\\" +
+            "\r|" +
+            "\r/" +
+            "\r-" +
+            "\r\\\n"
           , String(outputStream.toByteArray()))
       }
     }
