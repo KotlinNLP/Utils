@@ -35,17 +35,17 @@ class MetricCounter {
   /**
    * The precision statistic.
    */
-  val precision: Double get() = truePos.toDouble() / (truePos + falsePos)
+  val precision: Double get() = (truePos.toDouble() / (truePos + falsePos)).ifNaN { 0.0 }
 
   /**
    * The recall statistic.
    */
-  val recall: Double get() = truePos.toDouble() / relevant
+  val recall: Double get() = (truePos.toDouble() / relevant).ifNaN { 0.0 }
 
   /**
    * The f1 score statistic.
    */
-  val f1Score: Double get() = 2 * precision * recall / (precision + recall)
+  val f1Score: Double get() = (2 * precision * recall / (precision + recall)).ifNaN { 0.0 }
 
   /**
    * @return the string representation of the statistic metrics
@@ -61,4 +61,11 @@ class MetricCounter {
     this.falsePos = 0
     this.falseNeg = 0
   }
+
+  /**
+   * @param callback a callback called if this number is NaN
+   *
+   * @return this number if it is not NaN, otherwise the value returned by the [callback]
+   */
+  private fun Double.ifNaN(callback: () -> Double): Double = if (this.isNaN()) callback() else this
 }
