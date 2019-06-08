@@ -57,6 +57,20 @@ abstract class ItemsPool<ItemType: ItemsPool.IDItem> {
   }
 
   /**
+   * Release all the items of the pool and return the given number of available items.
+   *
+   * @param size the number items to return
+   *
+   * @return a list of available items
+   */
+  fun getItems(size: Int): List<ItemType> {
+
+    this.releaseAll()
+
+    return List(size = size, init = { this.getItem() })
+  }
+
+  /**
    * Set a item as available again.
    */
   fun releaseItem(item: ItemType) {
