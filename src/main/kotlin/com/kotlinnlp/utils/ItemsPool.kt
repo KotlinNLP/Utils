@@ -63,7 +63,7 @@ abstract class ItemsPool<ItemType: ItemsPool.IDItem> {
    *
    * @return a list of available items
    */
-  fun getItems(size: Int): List<ItemType> {
+  fun releaseAndGetItems(size: Int): List<ItemType> {
 
     this.releaseAll()
 
