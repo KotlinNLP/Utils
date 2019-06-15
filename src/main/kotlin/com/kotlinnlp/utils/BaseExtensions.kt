@@ -73,6 +73,43 @@ fun <T>List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) {
 }
 
 /**
+ * Performs the given [action] on each subrange of this list.
+ *
+ * @param min the minimal length of a subrange
+ * @param max the maximal length of a subrange
+ * @param action function that acts on a subrange of this list
+ */
+fun <T>List<T>.subRanges(min: Int = 1,
+                         max: Int = 3,
+                         action: (IntRange) -> Unit) {
+
+  require(min >= 0) { "Expected min >= 0. Found $min" }
+
+  for (length in min .. Math.min(this.size, max)) {
+    for (start in 0 .. this.size - length) {
+      action(IntRange(start, start + length))
+    }
+  }
+}
+
+
+/**
+ * Performs the given [action] on each sub-sequence of this list.
+ *
+ * @param min the minimal length of a sub-sequence
+ * @param max the maximal length of a sub-sequence
+ * @param action function that acts on a sub-sequence of this list
+ */
+fun <T>List<T>.subSequences(min: Int = 1,
+                            max: Int = 3,
+                            action: (List<T>) -> Unit) {
+
+  this.subRanges(min = min, max = max) {
+    action(this.subList(it.start, it.endInclusive))
+  }
+}
+
+/**
  * Returns a list containing all elements of the this list and, if not null, all the [other] elements.
  *
  * @param other the elements to concatenate (can be null)
