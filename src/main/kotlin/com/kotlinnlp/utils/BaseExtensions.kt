@@ -86,12 +86,11 @@ fun <T>List<T>.subRanges(min: Int = 1,
   require(min >= 0) { "Expected min >= 0. Found $min" }
 
   for (length in min .. Math.min(this.size, max)) {
-    for (start in 0 .. this.size - length) {
+    for (start in 0 until this.size - length) {
       action(IntRange(start, start + length))
     }
   }
 }
-
 
 /**
  * Performs the given [action] on each sub-sequence of this list.
@@ -105,7 +104,7 @@ fun <T>List<T>.subSequences(min: Int = 1,
                             action: (List<T>) -> Unit) {
 
   this.subRanges(min = min, max = max) {
-    action(this.subList(it.start, it.endInclusive))
+    action(this.subList(it.start, it.endInclusive + 1))
   }
 }
 
