@@ -79,9 +79,9 @@ fun <T>List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) {
  * @param max the maximal length of a subrange
  * @param action function that acts on a subrange of this list
  */
-fun <T>List<T>.subRanges(min: Int = 1,
-                         max: Int = 3,
-                         action: (IntRange) -> Unit) {
+fun <T>List<T>.forEachIndicesRange(min: Int,
+                                   max: Int,
+                                   action: (IntRange) -> Unit) {
 
   require(min >= 0) { "Expected min >= 0. Found $min" }
 
@@ -99,11 +99,11 @@ fun <T>List<T>.subRanges(min: Int = 1,
  * @param max the maximal length of a sub-sequence
  * @param action function that acts on a sub-sequence of this list
  */
-fun <T>List<T>.subSequences(min: Int = 1,
-                            max: Int = 3,
+fun <T>List<T>.forEachGroup(min: Int,
+                            max: Int,
                             action: (List<T>) -> Unit) {
 
-  this.subRanges(min = min, max = max) {
+  this.forEachIndicesRange(min = min, max = max) {
     action(this.subList(it.start, it.endInclusive + 1))
   }
 }
