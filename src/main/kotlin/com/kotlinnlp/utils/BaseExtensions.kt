@@ -83,11 +83,11 @@ fun <T>List<T>.forEachIndicesRange(min: Int,
                                    max: Int,
                                    action: (IntRange) -> Unit) {
 
-  require(min >= 0) { "Expected min >= 0. Found $min" }
+  require(min >= 1) { "Expected min >= 1. Found $min" }
 
   for (length in min .. Math.min(this.size, max)) {
-    for (start in 0 until this.size - length) {
-      action(IntRange(start, start + length))
+    for (start in 0 .. this.size - length) {
+      action(start until start + length)
     }
   }
 }
