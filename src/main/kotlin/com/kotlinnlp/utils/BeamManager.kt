@@ -35,12 +35,12 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
   /**
    * The possible value of an element.
    */
-  abstract class Value {
+  interface Value {
 
     /**
      * The score of this value.
      */
-    abstract var score: Double
+    var score: Double
   }
 
   /**
