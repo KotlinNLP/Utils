@@ -208,12 +208,11 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    */
   private fun runBeam() {
 
+    var i = 0
+
     this.initBeam()
 
-    run steps@{
-      var i = 0
-      while (i++ != this.maxIterations) { if (!this.solvingStep()) return@steps }
-    }
+    while (i++ < this.maxIterations && this.solvingStep());
   }
 
   /**
