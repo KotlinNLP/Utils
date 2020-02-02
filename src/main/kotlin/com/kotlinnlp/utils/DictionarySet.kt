@@ -67,14 +67,18 @@ class DictionarySet<T> : Serializable {
    * Add the given [element] to the dictionary, incrementing the count of its occurrences.
    *
    * @param element the element to add
+   *
+   * @return the ID of the given [element]
    */
-  fun add(element: T) {
+  fun add(element: T): Int {
 
     this.elementsMultiset.add(element)
 
     if (element !in this.elementsBiMap) {
       this.elementsBiMap[element] = this.elementsMultiset.elementSet().size - 1
     }
+
+    return this.getId(element)!!
   }
 
   /**
