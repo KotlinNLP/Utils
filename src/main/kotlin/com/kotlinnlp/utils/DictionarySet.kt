@@ -25,6 +25,12 @@ class DictionarySet<T> : Serializable {
   companion object Factory {
 
     /**
+     * Private val used to serialize the class (needed by Serializable).
+     */
+    @Suppress("unused")
+    private const val serialVersionUID: Long = 1L
+
+    /**
      * Build a [DictionarySet] containing the given [elements].
      *
      * @param elements the elements to insert into the building dictionary
