@@ -10,8 +10,7 @@ package com.kotlinnlp.utils
 import java.util.concurrent.ConcurrentHashMap
 
 /**
- * Map the elements of this collection executing the [transform] function in parallel threads and collecting the
- * results.
+ * Map the elements of this iterable executing the [transform] function in parallel threads and collecting the results.
  *
  * @param transform the transform function applied to each element of this collection
  */
