@@ -64,17 +64,20 @@ class RabbitMQClient(
 
   /**
    * Declare a queue with a name and a deliver callback.
-   * If the queue already exists it will be purged (all messages deleted).
    *
    * @param name the queue name
+   * @param purgeIfExisting if true (the default) and the queue already exists it will be purged (all messages deleted)
    * @param deliverCallback the deliver callback called when a message is sent to the queue (null to manage
    */
-  fun declareQueue(name: String, deliverCallback: ((message: String) -> Unit)? = null) {
+  fun declareQueue(name: String,
+                   purgeIfExisting: Boolean = true,
+                   deliverCallback: ((message: String) -> Unit)? = null) {
 
     this.connection.createChannel().use {
 
       it.queueDeclare(name, false, false, false, null)
-      it.queuePurge(name)
+
+      if (purgeIfExisting) it.queuePurge(name)
 
       if (deliverCallback != null)
         it.basicConsume(name, true, { _, delivery -> deliverCallback(String(delivery.body)) }, { _ -> })
