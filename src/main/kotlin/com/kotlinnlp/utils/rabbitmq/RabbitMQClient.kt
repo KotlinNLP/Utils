@@ -9,7 +9,7 @@ package com.kotlinnlp.utils.rabbitmq
 
 import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonObject
-import com.beust.klaxon.Parser
+import com.beust.klaxon.Klaxon
 import com.rabbitmq.client.*
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream
 import java.io.Closeable
@@ -53,7 +53,7 @@ class RabbitMQClient(
       channel.basicPublish("mgmt", "/queues?columns=name", props, byteArrayOf())
 
       val res: ByteArray = channel.basicGet(replyQueue, true).body
-      val jsonRes: JsonArray<*> = Parser().parse(ByteInputStream(res, res.size)) as JsonArray<*>
+      val jsonRes: JsonArray<*> = Klaxon().parseJsonArray(ByteInputStream(res, res.size).reader())
 
       jsonRes.mapNotNull {
         (it as JsonObject).string("name")!!.let { name ->

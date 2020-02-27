@@ -64,7 +64,7 @@
         <google-guava.version>23.2-jre</google-guava.version>
         <lmdbjava.version>0.6.3</lmdbjava.version>
         <slf4j.version>1.7.21</slf4j.version>
-        <klaxon.version>3.0.5</klaxon.version>
+        <klaxon.version>5.2</klaxon.version>
         <rabbitmq.version>5.8.0</rabbitmq.version>
     </properties>
 
