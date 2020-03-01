@@ -33,6 +33,7 @@ interface JSONSerializable {
    */
   private fun Any?.toJSON(): Any? = when (val self = this) {
     is List<*> -> json { array(self.map { it.toJSON() }) }
+    is Map<*, *> -> json { obj(*self.entries.map { it.key.toString() to it.value }.toTypedArray()) }
     is JSONSerializable -> self.toJSON()
     else -> self
   }
