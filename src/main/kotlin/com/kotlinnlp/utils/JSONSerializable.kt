@@ -9,7 +9,7 @@ package com.kotlinnlp.utils
 
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.json
-import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 
 /**
  * An object that can be converted to a [JsonObject] associating its member properties to keys with the same name.
@@ -24,7 +24,7 @@ interface JSONSerializable {
     val self = this
 
     return json {
-      obj(*self::class.declaredMemberProperties.map { it.name to it.getter.call(self).toJSON() }.toTypedArray())
+      obj(*self::class.memberProperties.map { it.name to it.getter.call(self).toJSON() }.toTypedArray())
     }
   }
 
