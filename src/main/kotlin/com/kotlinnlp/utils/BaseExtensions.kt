@@ -18,7 +18,7 @@ import java.nio.charset.Charset
  * @return a new list with the given element replaced
  */
 fun <T> List<T>.replace(index: Int, elm: T): List<T> =
-  this.mapIndexed { i, it ->  if (i == index) elm else it }
+  this.mapIndexed { i, it -> if (i == index) elm else it }
 
 /**
  * Remove the elements from this list from the given index.
@@ -27,9 +27,8 @@ fun <T> List<T>.replace(index: Int, elm: T): List<T> =
  *
  * @return the list without element after the index
  */
-fun <T> MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
-  this.subList(fromIndex, this.size).clear()
-  return this
+fun <T> MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> = this.apply {
+  subList(fromIndex, this.size).clear()
 }
 
 /**
@@ -37,8 +36,8 @@ fun <T> MutableList<T>.removeFrom(fromIndex: Int): MutableList<T> {
  *
  * @return the element that has been removed.
  */
-fun <T> MutableList<T>.removeAtIndexOfFirst(predicate: (T) -> Boolean)
-  = this.removeAt(this.indexOfFirst(predicate))
+fun <T> MutableList<T>.removeAtIndexOfFirst(predicate: (T) -> Boolean) =
+  this.removeAt(this.indexOfFirst(predicate))
 
 /**
  * @param callback a callback that returns a collection
@@ -63,7 +62,7 @@ fun <K, V, M : Map<K, V>> M.notEmptyOr(callback: () -> M): M =
  *
  * @return the combinations of the elements
  */
-fun <T>List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) { i, acc, element ->
+fun <T> List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) { i, acc, element ->
 
   for (j in i + 1 until this.size) {
     acc.add(Pair(element, this[j]))
@@ -79,9 +78,7 @@ fun <T>List<T>.combine(): List<Pair<T, T>> = this.foldIndexed(mutableListOf()) {
  * @param max the maximal length of a subrange
  * @param action function that acts on a subrange of this list
  */
-fun <T>List<T>.forEachIndicesRange(min: Int,
-                                   max: Int,
-                                   action: (IntRange) -> Unit) {
+fun <T>List<T>.forEachIndicesRange(min: Int, max: Int, action: (IntRange) -> Unit) {
 
   require(min >= 1) { "Expected min >= 1. Found $min" }
 
@@ -113,12 +110,14 @@ fun <T>List<T>.forEachGroup(min: Int,
  *
  * @param other the elements to concatenate (can be null)
  */
-fun <T> List<T>.concat(other: List<T>?): List<T> = other?.let { this.plus(it) } ?: this
+fun <T> List<T>.concat(other: List<T>?): List<T> =
+  other?.let { this.plus(it) } ?: this
 
 /**
  * Encodes the contents of this string using the specified character set and returns the resulting byte list.
  */
-fun String.toByteList(charset: Charset = Charsets.UTF_8) = this.toByteArray(charset).toList()
+fun String.toByteList(charset: Charset = Charsets.UTF_8) =
+  this.toByteArray(charset).toList()
 
 /**
  * Return the number with the specified number of decimals.
@@ -128,6 +127,8 @@ fun String.toByteList(charset: Charset = Charsets.UTF_8) = this.toByteArray(char
  * @return the number with the specified number of decimals
  */
 fun Double.toFixed(numDecimalPlaces: Int): Double {
+
   val factor = Math.pow(10.0, numDecimalPlaces.toDouble())
+
   return Math.round(this * factor) / factor
 }

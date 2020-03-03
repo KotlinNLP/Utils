@@ -7,18 +7,18 @@
 
 package com.kotlinnlp.utils
 
-import org.lmdbjava.Dbi
-import org.lmdbjava.Env
 import java.io.Closeable
+import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteBuffer.allocateDirect
-import org.lmdbjava.KeyRange
-import org.lmdbjava.Env.create
+import java.nio.file.Path
+import org.lmdbjava.Dbi
 import org.lmdbjava.DbiFlags.MDB_CREATE
+import org.lmdbjava.Env
+import org.lmdbjava.Env.create
 import org.lmdbjava.EnvFlags.MDB_NOLOCK
 import org.lmdbjava.EnvFlags.MDB_RDONLY_ENV
-import java.io.File
-import java.nio.file.Path
+import org.lmdbjava.KeyRange
 
 /**
  * Define a wrapper of the Lightning Memory Database (LMDB) for Java, implemented as extension a [MutableMap].

@@ -16,7 +16,7 @@ package com.kotlinnlp.utils
  * @param maxForkSize the max number of forks that can be generated from a state (-1 = infinite)
  * @param maxIterations the max number of iterations of solving steps (it is the depth of beam recursion, -1 = infinite)
  */
-abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<ValueType, StateType>.State>(
+abstract class BeamManager<ValueType : BeamManager.Value, StateType : BeamManager<ValueType, StateType>.State>(
   private val valuesMap: Map<Int, List<ValueType>>,
   private val maxBeamSize: Int = 5,
   private val maxForkSize: Int = 3,
@@ -30,7 +30,7 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    * @property value the value of this element
    * @property index the index of the value within the possible values of this element
    */
-  data class StateElement<T: Value>(val id: Int, val value: T, internal val index: Int)
+  data class StateElement<T : Value>(val id: Int, val value: T, internal val index: Int)
 
   /**
    * The possible value of an element.
@@ -128,18 +128,6 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
      * @return the element with the given id
      */
     protected fun getElement(id: Int): StateElement<ValueType> = this.elementsById.getValue(id)
-
-    /**
-     * Replace an element of this list at a given index with another returning a new list.
-     *
-     * @param index the index of the replacement
-     * @param elm the replacement
-     *
-     * @return a new list with the given element replaced
-     */
-    private fun <T> List<T>.replace(index: Int, elm: T): List<T> =
-      this.mapIndexed { i, it ->  if (i == index) elm else it }
-
   }
 
   /**
@@ -307,13 +295,13 @@ abstract class BeamManager<ValueType: BeamManager.Value, StateType: BeamManager<
    *
    * @return a new list with the values sorted by descending ambiguity.
    */
-  private fun <T: Value> List<StateElement<T>>.sortedByAmbiguity(): List<StateElement<T>> =
+  private fun <T : Value> List<StateElement<T>>.sortedByAmbiguity(): List<StateElement<T>> =
     this.sortedBy { elm -> scoresDiffMap.getValue(elm.id).getOrElse(elm.index) { 1.0 + elm.id } }
 
   /**
    * Remove the last element of the list.
    */
-  private fun <T>MutableList<T>.removeLast() {
+  private fun <T> MutableList<T>.removeLast() {
     this.removeAt(this.lastIndex)
   }
 }

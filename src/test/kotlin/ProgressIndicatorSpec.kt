@@ -6,15 +6,15 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.utils.progressindicator.*
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import java.io.ByteArrayOutputStream
 import kotlin.test.assertEquals
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 /**
  *
  */
-class ProgressIndicatorSpec: Spek({
+class ProgressIndicatorSpec : Spek({
 
   describe("a ProgressIndicatorBar") {
 
@@ -153,8 +153,8 @@ class ProgressIndicatorSpec: Spek({
             "\r|" +
             "\r/" +
             "\r-" +
-            "\r\\\n"
-          , String(outputStream.toByteArray()))
+            "\r\\\n",
+          String(outputStream.toByteArray()))
       }
     }
   }

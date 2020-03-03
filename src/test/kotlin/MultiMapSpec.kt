@@ -6,11 +6,11 @@
  * ------------------------------------------------------------------*/
 
 import com.kotlinnlp.utils.MultiMap
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 
 /**
  *
@@ -98,7 +98,7 @@ class MultiMapSpec : Spek({
 
     context("map()") {
 
-      val returnedMultimap = multimap.map { _, _, elm -> elm + 10}
+      val returnedMultimap = multimap.map { _, _, elm -> elm + 10 }
 
       it("should return a MultiMap with the same first level keys") {
         assertEquals(setOf(5, 6), returnedMultimap.keys)

@@ -43,7 +43,7 @@ class DictionarySet<T> : Serializable {
 
       elements.forEach { dictionary.add(it) }
 
-      return  dictionary
+      return dictionary
     }
   }
 

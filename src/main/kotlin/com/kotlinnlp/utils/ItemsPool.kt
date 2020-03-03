@@ -11,7 +11,7 @@ package com.kotlinnlp.utils
  * A pool of items which allows to allocate and release them when needed, without creating new ones every time.
  * E.g.: it is useful to optimize the creation of new structures every time a NeuralProcessor is needed.
  */
-abstract class ItemsPool<ItemType: ItemsPool.IDItem> {
+abstract class ItemsPool<ItemType : ItemsPool.IDItem> {
 
   /**
    * An interface which defines an item with an [id] property.
