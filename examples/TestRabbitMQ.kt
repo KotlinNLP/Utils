@@ -31,5 +31,8 @@ fun main() {
     print("4. Waiting to read the message from '$queueName'... ")
     Thread.sleep(500)
     println("received: " + rabbit.readMessage(queueName))
+
+    print("5. Delete queue '$queueName'")
+    rabbit.deleteQueue(queueName)
   }
 }

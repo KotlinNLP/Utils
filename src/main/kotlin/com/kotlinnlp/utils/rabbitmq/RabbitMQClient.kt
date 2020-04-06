@@ -85,6 +85,18 @@ class RabbitMQClient(
   }
 
   /**
+   * Delete a queue.
+   *
+   * @param queueName the queue name
+   */
+  fun deleteQueue(queueName: String) {
+
+    this.connection.createChannel().use {
+      it.queueDelete(queueName)
+    }
+  }
+
+  /**
    * Read a message from a queue.
    *
    * @param queueName the queue name
