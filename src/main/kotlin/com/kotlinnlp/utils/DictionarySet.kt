@@ -45,6 +45,22 @@ class DictionarySet<T> : Serializable {
 
       return dictionary
     }
+
+    /**
+     * Build a [DictionarySet] containing the given [elements].
+     *
+     * @param elements the elements to insert into the building dictionary
+     *
+     * @return a new dictionary set containing the given [elements]
+     */
+    operator fun <T> invoke(elements: Sequence<T>): DictionarySet<T> {
+
+      val dictionary = DictionarySet<T>()
+
+      elements.forEach { dictionary.add(it) }
+
+      return dictionary
+    }
   }
 
   /**
