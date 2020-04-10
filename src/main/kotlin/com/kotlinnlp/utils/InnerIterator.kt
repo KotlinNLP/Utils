@@ -8,17 +8,17 @@
 package com.kotlinnlp.utils
 
 /**
- * A helper class to iterate over integer indices shuffling them with a [Shuffler] object.
+ * A helper class to iterate over integer indices, eventually shuffling them with a [Shuffler].
  *
  * @property size the number of indices over which to iterate
- * @param shuffler the optional [Shuffler] object (if null indices are not shuffled)
+ * @param shuffler the indices shuffler or null to maintain the natural order
  */
-class ExamplesIndices(private val size: Int, shuffler: Shuffler? = null) : Iterable<Int> {
+class ShuffledIndices(private val size: Int, shuffler: Shuffler? = null) : Iterable<Int> {
 
   /**
-   * Indices Iterator class.
+   * The inner iterator class.
    */
-  private inner class IndicesIterator : Iterator<Int> {
+  private inner class InnerIterator : Iterator<Int> {
 
     /**
      * The count of the current index.
@@ -51,5 +51,5 @@ class ExamplesIndices(private val size: Int, shuffler: Shuffler? = null) : Itera
   /**
    * @return the iterator over the indices
    */
-  override fun iterator(): Iterator<Int> = IndicesIterator()
+  override fun iterator(): Iterator<Int> = InnerIterator()
 }
