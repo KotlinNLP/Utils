@@ -19,6 +19,52 @@ object Regex {
 
   /**
    * Match a punctuation token.
+   *
+   * Following a list of the punctuation types that match:
+   * - apostrophe: ’'
+   * - brackets: ()[]{}<>
+   * - colon: :
+   * - comma: ,
+   * - dashes: ‒–—―
+   * - ellipsis: …
+   * - exclamation mark: !
+   * - full stop/period: .
+   * - guillemets: «»
+   * - hyphen: -‐
+   * - question mark: ?
+   * - quotation marks: ‘’“”
+   * - semicolon: ;
+   * - slash/stroke: /
+   * - backslash: \\
+   * - solidus: ⁄
+   * - space: ␠
+   * - interpunct: ·
+   * - ampersand: &
+   * - at sign: @
+   * - asterisk: *
+   * - bullet: •
+   * - caret: ^
+   * - currency: ¤¢$€£¥₩₪
+   * - dagger: †‡
+   * - degree: °
+   * - inverted exclamation point: ¡
+   * - inverted question mark: ¿
+   * - negation: ¬
+   * - number sign (hashtag): #
+   * - number sign: №
+   * - percent and related signs: %‰‱
+   * - pilcrow: ¶
+   * - prime: ′
+   * - section sign: §
+   * - tilde/swung dash: ~
+   * - umlaut/diaeresis: ¨
+   * - underscore/understrike: _
+   * - vertical/pipe/broken bar: |¦
+   * - asterism: ⁂
+   * - index/fist: ☞
+   * - therefore sign: ∴
+   * - interrobang: ‽
+   * - reference mark: ※
    */
-  val punctuation = Regex("^[….,;:#!?|/\\\\$%&=~*\\-–_\"“”″‘'`^()<>«»\\[\\]{}]+$")
+  val punctuation = Regex("^[….,;:#№!?¿|¦/\\\\%‰‱&=~*@\\-‐‒–—―_\"“”″‘’'`′^()<>«»\\[\\]{}⁄␠·•¤¢$€£¥₩₪†‡°¨¡¬¶§⁂∴☞‽※]+$")
 }
