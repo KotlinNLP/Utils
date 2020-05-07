@@ -18,8 +18,8 @@ class WordPieceTokenizerSpec : Spek({
 
   describe("a WordPieceTokenizer") {
 
-    val vocabulary =
-      DictionarySet(listOf("Lorem", "ipsum", "dol", "##or", "sit", "amet", "cons", "##ecte", "##tur", ",", "."))
+    val vocabulary = DictionarySet(
+      listOf("Lorem", "ipsum", "dol", "##or", "sit", "amet", "cons", "##ecte", "##tur", ",", ".", "[SPECIAL_1]"))
 
     context("Default parameters") {
 
@@ -86,6 +86,18 @@ class WordPieceTokenizerSpec : Spek({
         assertEquals(
           listOf("Lorem", "ipsum", "dol", "##or", "sit", "amet", ",", "[UNK]"),
           tokenizer.tokenize(text, maxCharsPerToken = 5))
+      }
+    }
+
+    context("Never split tokens") {
+
+      val tokenizer = WordPieceTokenizer(vocabulary)
+      val text = "Lorem [SPECIAL_1] ipsum dolor [SPECIAL_2] amet"
+
+      it("should return the expected tokenization of the text `$text`") {
+        assertEquals(
+          listOf("Lorem", "[SPECIAL_1]", "ipsum", "dol", "##or", "[UNK]", "amet"),
+          tokenizer.tokenize(text, neverSplit = setOf("[SPECIAL_1]", "[SPECIAL_2]")))
       }
     }
   }

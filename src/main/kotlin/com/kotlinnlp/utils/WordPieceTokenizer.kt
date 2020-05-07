@@ -26,14 +26,15 @@ class WordPieceTokenizer(private val vocabulary: DictionarySet<String>, private 
    *
    * @param text the input text
    * @param maxCharsPerToken the max number of chars of a token to consider it unknown
+   * @param neverSplit tokens that must not be split
    *
    * @return the word piece tokens
    */
-  fun tokenize(text: String, maxCharsPerToken: Int = 100): List<String> {
+  fun tokenize(text: String, maxCharsPerToken: Int = 100, neverSplit: Set<String>? = null): List<String> {
 
     val tokens: MutableList<String> = mutableListOf()
 
-    this.basicTokenize(text).forEach { token ->
+    this.basicTokenize(text = text, neverSplit = neverSplit).forEach { token ->
 
       if (token.length > maxCharsPerToken) {
 
@@ -82,33 +83,40 @@ class WordPieceTokenizer(private val vocabulary: DictionarySet<String>, private 
    * Split a text in tokens by spaces and punctuation.
    *
    * @param text the input text
+   * @param neverSplit tokens that must not be split
    *
-   * @return the tokens split by spaces and punctuation
+   * @return the sequence of tokens split by spaces and punctuation
    */
-  private fun basicTokenize(text: String): List<String> {
+  private fun basicTokenize(text: String, neverSplit: Set<String>?): Sequence<String> =
 
-    val tokens: MutableList<String> = mutableListOf()
-    var start = 0
+    text.split(" ").asSequence().flatMap { token ->
 
-    text.forEachIndexed { i, c ->
+      if (neverSplit?.contains(token) == true) {
 
-      val isPunct: Boolean = Regex.punctuation.matches(c.toString())
+        sequenceOf(token)
 
-      if (c.isWhitespace() || isPunct) {
+      } else {
 
-        if (start < i)
-          tokens.add(text.substring(start, i))
+        val subTokens: MutableList<String> = mutableListOf()
+        var start = 0
 
-        start = i + 1
+        token.forEachIndexed { i, c ->
+
+          if (Regex.punctuation.matches(c.toString())) {
+
+            if (start < i)
+              subTokens.add(token.substring(start, i))
+
+            subTokens.add(c.toString())
+
+            start = i + 1
+          }
+        }
+
+        if (start < token.length)
+          subTokens.add(token.substring(start))
+
+        subTokens.asSequence()
       }
-
-      if (isPunct)
-        tokens.add(c.toString())
     }
-
-    if (start < text.length)
-      tokens.add(text.substring(start))
-
-    return tokens
-  }
 }
