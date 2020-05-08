@@ -12,8 +12,13 @@ package com.kotlinnlp.utils
  *
  * @param vocabulary a vocabulary on which to base the tokenization
  * @param unknownToken the string used to indicate unknown tokens
+ * @param splitPrefix the prefix that indicates the word pieces after the first
  */
-class WordPieceTokenizer(private val vocabulary: DictionarySet<String>, private val unknownToken: String = "[UNK]") {
+class WordPieceTokenizer(
+  private val vocabulary: DictionarySet<String>,
+  private val unknownToken: String = "[UNK]",
+  private val splitPrefix: String = "##"
+) {
 
   /**
    * Tokenize a piece of text into its word pieces.
@@ -53,7 +58,7 @@ class WordPieceTokenizer(private val vocabulary: DictionarySet<String>, private 
 
           while (start < end) {
 
-            val substr: String = token.substring(start, end).let { if (start > 0) "##$it" else it }
+            val substr: String = token.substring(start, end).let { if (start > 0) "$splitPrefix$it" else it }
 
             if (substr in this.vocabulary) {
               curSubstr = substr
