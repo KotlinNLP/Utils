@@ -85,6 +85,25 @@ class WordPieceTokenizer(
   }
 
   /**
+   * @param pieces the word-pieces resulting from a tokenization
+   *
+   * @return the basic words obtained concatenating the consecutive word-pieces of the given list
+   */
+  fun piecesToWords(pieces: List<String>): List<String> {
+
+    val words: MutableList<String> = mutableListOf()
+
+    pieces.forEach { piece ->
+      if (piece.startsWith(this.splitPrefix))
+        words[words.lastIndex] += piece.substring(this.splitPrefix.length)
+      else
+        words.add(piece)
+    }
+
+    return words.toList()
+  }
+
+  /**
    * Split a text in tokens by spaces and punctuation.
    *
    * @param text the input text

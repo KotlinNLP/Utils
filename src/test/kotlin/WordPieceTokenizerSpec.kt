@@ -100,5 +100,22 @@ class WordPieceTokenizerSpec : Spek({
           tokenizer.tokenize(text, neverSplit = setOf("[SPECIAL_1]", "[SPECIAL_2]")))
       }
     }
+
+    context("Pieces to words") {
+
+      val tokenizer = WordPieceTokenizer(vocabulary)
+
+      val tests = listOf(
+        listOf("Lorem", "ipsum", "dolor") to listOf("Lorem", "ipsum", "dolor"),
+        listOf("Lorem", "ipsum", "dol", "##or") to listOf("Lorem", "ipsum", "dolor"),
+        listOf("Lorem", "ipsum", "dol", "##or", "sit", "am", "##et") to listOf("Lorem", "ipsum", "dolor", "sit", "amet")
+      )
+
+      tests.forEach { (pieces, words) ->
+        it("should return the expected reconstruction of the pieces: `${tests.joinToString("`, ")}`") {
+          assertEquals(words, tokenizer.piecesToWords(pieces))
+        }
+      }
+    }
   }
 })
