@@ -26,8 +26,8 @@ class WordPieceTokenizer(
    * This uses a greedy longest-match-first algorithm to perform tokenization using the given [vocabulary].
    *
    * For example:
-   *   input = "unaffable"
-   *   output = ["un", "##aff", "##able"]
+   *   input = "you are unaffable"
+   *   output = ["you", "are", "un", "##aff", "##able"]
    *
    * @param text the input text
    * @param maxCharsPerToken the max number of chars of a token to consider it unknown
@@ -36,12 +36,31 @@ class WordPieceTokenizer(
    * @return the word-piece tokens
    */
   fun tokenize(text: String, maxCharsPerToken: Int = 100, neverSplit: Set<String>? = null): List<String> =
-    this.basicTokenize(text = text, neverSplit = neverSplit)
+    this.tokenize(
+      tokens = this.basicTokenize(text = text, neverSplit = neverSplit),
+      maxCharsPerToken = maxCharsPerToken)
+
+  /**
+   * Tokenize a list of tokens into word-pieces.
+   *
+   * This uses a greedy longest-match-first algorithm to perform tokenization using the given [vocabulary].
+   *
+   * For example:
+   *   input = ["you", "are", "unaffable"]
+   *   output = ["you", "are", "un", "##aff", "##able"]
+   *
+   * @param tokens the input tokens
+   * @param maxCharsPerToken the max number of chars of a token to consider it unknown
+   *
+   * @return the word-piece tokens
+   */
+  fun tokenize(tokens: Sequence<String>, maxCharsPerToken: Int = 100): List<String> =
+    tokens
       .flatMap {
         if (it.length > maxCharsPerToken)
           sequenceOf(this.unknownToken)
         else
-          this.tokenize(it)
+          this.tokenize(it.trim())
       }
       .toList()
 
