@@ -10,14 +10,14 @@ package com.kotlinnlp.utils
 /**
  * Text tokenizer in word pieces.
  *
- * @param vocabulary a vocabulary on which to base the tokenization
- * @param unknownToken the string used to indicate unknown tokens
- * @param splitPrefix the prefix that indicates the word pieces after the first
+ * @property vocabulary a vocabulary on which to base the tokenization
+ * @property unknownToken the string used to indicate unknown tokens
+ * @property splitPrefix the prefix that indicates the word pieces after the first
  */
 class WordPieceTokenizer(
-  private val vocabulary: DictionarySet<String>,
-  private val unknownToken: String = "[UNK]",
-  private val splitPrefix: String = "##"
+  val vocabulary: DictionarySet<String>,
+  val unknownToken: String = "[UNK]",
+  val splitPrefix: String = "##"
 ) {
 
   /**
