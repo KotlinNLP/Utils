@@ -7,20 +7,29 @@
 
 package com.kotlinnlp.utils
 
-import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.*
 
 /**
  * Map the elements of this iterable executing the [transform] function in parallel threads and collecting the results.
+ * If given, at max [maxConcurrentThreads] threads are executed in parallel.
  *
+ * @param maxConcurrentThreads the max number of concurrent threads at a time
  * @param transform the transform function applied to each element of this collection
  */
-fun <A, B> Iterable<A>.pmap(transform: (A) -> B): List<B> {
+fun <A, B> Iterable<A>.pmap(maxConcurrentThreads: Int? = null, transform: (A) -> B): List<B> {
 
   val results = ConcurrentHashMap<Int, B>()
+  val sem: Semaphore? = maxConcurrentThreads?.let { Semaphore(it) }
 
   this
-    .mapIndexed { i, it -> Thread { results[i] = transform(it) }.apply { start() } }
+    .mapIndexed { i, it ->
+      Thread {
+        sem?.acquire()
+        results[i] = transform(it)
+        sem?.release()
+      }.apply { start() }
+    }
     .forEach { it.join() }
 
-  return results.values.toList()
+  return results.keys.asSequence().sorted().map { key -> results.getValue(key) }.toList()
 }
