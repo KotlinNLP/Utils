@@ -21,7 +21,7 @@ class WordPieceTokenizer(
 ) {
 
   /**
-   * Tokenize a piece of text into its word pieces.
+   * Tokenize a piece of text into its word-pieces.
    *
    * This uses a greedy longest-match-first algorithm to perform tokenization using the given [vocabulary].
    *
@@ -33,56 +33,17 @@ class WordPieceTokenizer(
    * @param maxCharsPerToken the max number of chars of a token to consider it unknown
    * @param neverSplit tokens that must not be split
    *
-   * @return the word piece tokens
+   * @return the word-piece tokens
    */
-  fun tokenize(text: String, maxCharsPerToken: Int = 100, neverSplit: Set<String>? = null): List<String> {
-
-    val tokens: MutableList<String> = mutableListOf()
-
-    this.basicTokenize(text = text, neverSplit = neverSplit).forEach { token ->
-
-      if (token.length > maxCharsPerToken) {
-
-        tokens.add(this.unknownToken)
-
-      } else {
-
-        var isBad = false
-        var start = 0
-        val subTokens: MutableList<String> = mutableListOf()
-
-        while (start < token.length) {
-
-          var end: Int = token.length
-          var curSubstr: String? = null
-
-          while (start < end) {
-
-            val substr: String = token.substring(start, end).let { if (start > 0) "$splitPrefix$it" else it }
-
-            if (substr in this.vocabulary) {
-              curSubstr = substr
-              break
-            }
-
-            end -= 1
-          }
-
-          if (curSubstr == null) {
-            isBad = true
-            break
-          }
-
-          subTokens.add(curSubstr)
-          start = end
-        }
-
-        if (isBad) tokens.add(this.unknownToken) else tokens.addAll(subTokens)
+  fun tokenize(text: String, maxCharsPerToken: Int = 100, neverSplit: Set<String>? = null): List<String> =
+    this.basicTokenize(text = text, neverSplit = neverSplit)
+      .flatMap {
+        if (it.length > maxCharsPerToken)
+          sequenceOf(this.unknownToken)
+        else
+          this.tokenize(it)
       }
-    }
-
-    return tokens.toList()
-  }
+      .toList()
 
   /**
    * @param pieces the word-pieces resulting from a tokenization
@@ -101,6 +62,51 @@ class WordPieceTokenizer(
     }
 
     return words.toList()
+  }
+
+  /**
+   * Tokenize a token into its word-pieces.
+   *
+   * @param token a token
+   *
+   * @return the word-pieces of the given token
+   */
+  private fun tokenize(token: String): Sequence<String> {
+
+    val wordPieces: MutableList<String> = mutableListOf()
+    val subTokens: MutableList<String> = mutableListOf()
+    var isBad = false
+    var start = 0
+
+    while (start < token.length) {
+
+      var end: Int = token.length
+      var curSubstr: String? = null
+
+      while (start < end) {
+
+        val substr: String = token.substring(start, end).let { if (start > 0) "$splitPrefix$it" else it }
+
+        if (substr in this.vocabulary) {
+          curSubstr = substr
+          break
+        }
+
+        end -= 1
+      }
+
+      if (curSubstr == null) {
+        isBad = true
+        break
+      }
+
+      subTokens.add(curSubstr)
+      start = end
+    }
+
+    if (isBad) wordPieces.add(this.unknownToken) else wordPieces.addAll(subTokens)
+
+    return wordPieces.asSequence()
   }
 
   /**
