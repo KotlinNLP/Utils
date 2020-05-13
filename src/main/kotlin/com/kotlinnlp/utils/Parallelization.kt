@@ -18,6 +18,12 @@ import java.util.concurrent.*
  */
 fun <A, B> Iterable<A>.pmap(maxConcurrentThreads: Int? = null, transform: (A) -> B): List<B> {
 
+  require(maxConcurrentThreads == null || maxConcurrentThreads > 0) {
+    "The number of max concurrent threads must be greater than 0."
+  }
+
+  if (maxConcurrentThreads == 1) return this.map(transform)
+
   val results = ConcurrentHashMap<Int, B>()
   val sem: Semaphore? = maxConcurrentThreads?.let { Semaphore(it) }
 
