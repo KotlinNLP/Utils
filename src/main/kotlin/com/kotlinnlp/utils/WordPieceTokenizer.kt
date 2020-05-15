@@ -69,18 +69,30 @@ class WordPieceTokenizer(
    *
    * @return the basic words obtained concatenating the consecutive word-pieces of the given list
    */
-  fun piecesToWords(pieces: List<String>): List<String> {
+  fun piecesToWords(pieces: List<String>): List<String> = this.groupPieces(pieces).map { group ->
+    pieces.slice(group)
+      .asSequence()
+      .mapIndexed { i, piece -> if (i == 0) piece else piece.substring(this.splitPrefix.length) }
+      .joinToString("")
+  }
 
-    val words: MutableList<String> = mutableListOf()
+  /**
+   * @param pieces the word-pieces resulting from a tokenization
+   *
+   * @return the indices ranges of the given word-pieces that represent unique words
+   */
+  fun groupPieces(pieces: List<String>): List<IntRange> {
 
-    pieces.forEach { piece ->
+    val groups: MutableList<IntArray> = mutableListOf()
+
+    pieces.forEachIndexed { i, piece ->
       if (piece.startsWith(this.splitPrefix))
-        words[words.lastIndex] += piece.substring(this.splitPrefix.length)
+        groups.last().let { it[1] = i }
       else
-        words.add(piece)
+        groups.add(IntArray(2) { i })
     }
 
-    return words.toList()
+    return groups.map { IntRange(it[0], it[1]) }
   }
 
   /**

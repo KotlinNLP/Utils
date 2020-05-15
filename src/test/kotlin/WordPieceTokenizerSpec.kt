@@ -185,5 +185,23 @@ class WordPieceTokenizerSpec : Spek({
         }
       }
     }
+
+    context("Group pieces") {
+
+      val tokenizer = WordPieceTokenizer(vocabulary)
+
+      val tests = listOf(
+        listOf("Lorem", "ipsum", "dolor") to listOf(IntRange(0, 0), IntRange(1, 1), IntRange(2, 2)),
+        listOf("Lorem", "ipsum", "dol", "##or") to listOf(IntRange(0, 0), IntRange(1, 1), IntRange(2, 3)),
+        listOf("Lorem", "ipsum", "dol", "##or", "sit", "am", "##et") to
+          listOf(IntRange(0, 0), IntRange(1, 1), IntRange(2, 3), IntRange(4, 4), IntRange(5, 6))
+      )
+
+      tests.forEach { (pieces, groups) ->
+        it("should return the expected reconstruction of the pieces: `${tests.joinToString("`, ")}`") {
+          assertEquals(groups, tokenizer.groupPieces(pieces))
+        }
+      }
+    }
   }
 })
