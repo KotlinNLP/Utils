@@ -8,6 +8,7 @@
 package com.kotlinnlp.utils
 
 import java.util.concurrent.*
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Map the elements of this iterable executing the [transform] function in parallel threads and collecting the results.
@@ -16,7 +17,7 @@ import java.util.concurrent.*
  * @param maxConcurrentThreads the max number of concurrent threads at a time
  * @param transform the transform function applied to each element of this collection
  */
-fun <A, B> Iterable<A>.pmap(maxConcurrentThreads: Int? = null, transform: (A) -> B): List<B> {
+fun <T, R> Iterable<T>.pmap(maxConcurrentThreads: Int? = null, transform: (T) -> R): List<R> {
 
   require(maxConcurrentThreads == null || maxConcurrentThreads > 0) {
     "The number of max concurrent threads must be greater than 0."
@@ -24,18 +25,30 @@ fun <A, B> Iterable<A>.pmap(maxConcurrentThreads: Int? = null, transform: (A) ->
 
   if (maxConcurrentThreads == 1) return this.map(transform)
 
-  val results = ConcurrentHashMap<Int, B>()
   val sem: Semaphore? = maxConcurrentThreads?.let { Semaphore(it) }
+  val results = ConcurrentHashMap<Int, R>()
+  val elements: List<T> = this.toList()
+  val nextElmIndex = AtomicInteger(0)
 
-  this
-    .mapIndexed { i, it ->
-      Thread {
+  List(maxConcurrentThreads ?: elements.size) {
+
+    Thread {
+
+      var elmIndex: Int = nextElmIndex.getAndIncrement()
+
+      while (elmIndex < elements.size) {
+
         sem?.acquire()
-        results[i] = transform(it)
-        sem?.release()
-      }.apply { start() }
-    }
-    .forEach { it.join() }
 
-  return results.keys.asSequence().sorted().map { key -> results.getValue(key) }.toList()
+        results[elmIndex] = transform(elements[elmIndex])
+        elmIndex = nextElmIndex.getAndIncrement()
+
+        sem?.release()
+      }
+
+    }.apply { start() }
+
+  }.forEach { it.join() }
+
+  return elements.indices.map { elmIndex -> results.getValue(elmIndex) }
 }
