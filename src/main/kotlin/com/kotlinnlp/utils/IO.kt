@@ -9,7 +9,32 @@ package com.kotlinnlp.utils
 
 import java.io.FileInputStream
 import java.io.InputStream
+import java.net.URL
 import java.util.*
+
+/**
+ * Get the URL of a resource contained in the `resources` directory of the package.
+ *
+ * @param relPath the resource path, relative to the `resources` directory and with slashes `/` as separators
+ *
+ * @throws RuntimeException if the resource is not present
+ *
+ * @return the URL of the requested resource
+ */
+fun getResource(relPath: String): URL = Charsets.javaClass.getResource("/$relPath")
+  ?: throw RuntimeException("Cannot find the package resource under the path `$relPath`")
+
+/**
+ * Get the input stream of a resource contained in the `resources` directory of the package.
+ *
+ * @param relPath the resource path, relative to the `resources` directory and with slashes `/` as separators
+ *
+ * @throws RuntimeException if the resource is not present
+ *
+ * @return the input stream of the requested resource
+ */
+fun getResourceAsStream(relPath: String): InputStream = Charsets.javaClass.getResourceAsStream("/$relPath")
+  ?: throw RuntimeException("Cannot find the package resource under the path `$relPath`")
 
 /**
  * Iterate over the lines of this input stream.
