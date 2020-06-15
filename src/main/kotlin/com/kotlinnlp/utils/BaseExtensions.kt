@@ -114,6 +114,29 @@ fun <T> List<T>.concat(other: List<T>?): List<T> =
   other?.let { this.plus(it) } ?: this
 
 /**
+ * Fold up these nested lists inverting the outer with the inner lists.
+ * All the inner lists must contain the same number of elements.
+ *
+ * If the outer list contains M inner lists and, in turn, each of them contains N elements, then a list
+ * with N inner lists will be given in output, each with M elements.
+ *
+ * @return the outer list folded up with the inner lists
+ */
+fun <T> List<List<T>>.foldUp(): List<List<T>> {
+
+  val outer = this
+  val ret: List<MutableList<T>> = List(outer.first().size) { mutableListOf<T>() }
+
+  outer.forEach { inner -> // 1 .. M
+    inner.forEachIndexed { j, elm -> // 1 .. N
+      ret[j].add(elm)
+    }
+  }
+
+  return ret.map { it.toList() }
+}
+
+/**
  * Encodes the contents of this string using the specified character set and returns the resulting byte list.
  */
 fun String.toByteList(charset: Charset = Charsets.UTF_8) =
