@@ -8,6 +8,8 @@
 package com.kotlinnlp.utils
 
 import java.nio.charset.Charset
+import kotlin.math.pow
+import kotlin.math.roundToLong
 
 /**
  * Copy this list replacing the element at a given index.
@@ -82,7 +84,7 @@ fun <T>List<T>.forEachIndicesRange(min: Int, max: Int, action: (IntRange) -> Uni
 
   require(min >= 1) { "Expected min >= 1. Found $min" }
 
-  for (length in min .. Math.min(this.size, max)) {
+  for (length in min ..this.size.coerceAtMost(max)) {
     for (start in 0 .. this.size - length) {
       action(start until start + length)
     }
@@ -101,7 +103,7 @@ fun <T>List<T>.forEachGroup(min: Int,
                             action: (List<T>) -> Unit) {
 
   this.forEachIndicesRange(min = min, max = max) {
-    action(this.subList(it.start, it.endInclusive + 1))
+    action(this.subList(it.first, it.last + 1))
   }
 }
 
@@ -151,7 +153,7 @@ fun String.toByteList(charset: Charset = Charsets.UTF_8) =
  */
 fun Double.toFixed(numDecimalPlaces: Int): Double {
 
-  val factor = Math.pow(10.0, numDecimalPlaces.toDouble())
+  val factor: Double = 10.0.pow(numDecimalPlaces)
 
-  return Math.round(this * factor) / factor
+  return (this * factor).roundToLong() / factor
 }
