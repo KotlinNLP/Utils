@@ -13,6 +13,11 @@ package com.kotlinnlp.utils
 object Regex {
 
   /**
+   * Match whitespaces.
+   */
+  val whitespaces = Regex("\\s")
+
+  /**
    * Match numeric values.
    */
   val numbers = Regex("^\\d+(?:[,.]\\d+)*(?:\\[.,]\\d+)?\$")
