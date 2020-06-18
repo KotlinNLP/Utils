@@ -14,23 +14,25 @@ import java.util.concurrent.atomic.AtomicInteger
  * Map the elements of this iterable executing the [transform] function in parallel threads and collecting the results.
  * If given, at max [maxConcurrentThreads] threads are executed in parallel.
  *
+ * The [transform] function receives the thread index and the current element as arguments.
+ *
  * @param maxConcurrentThreads the max number of concurrent threads at a time
  * @param transform the transform function applied to each element of this collection
  */
-fun <T, R> Iterable<T>.pmap(maxConcurrentThreads: Int? = null, transform: (T) -> R): List<R> {
+fun <T, R> Iterable<T>.pmapIndexed(maxConcurrentThreads: Int? = null, transform: (Int, T) -> R): List<R> {
 
   require(maxConcurrentThreads == null || maxConcurrentThreads > 0) {
     "The number of max concurrent threads must be greater than 0."
   }
 
-  if (maxConcurrentThreads == 1) return this.map(transform)
+  if (maxConcurrentThreads == 1) return this.mapIndexed(transform)
 
   val sem: Semaphore? = maxConcurrentThreads?.let { Semaphore(it) }
   val results = ConcurrentHashMap<Int, R>()
   val elements: List<T> = this.toList()
   val nextElmIndex = AtomicInteger(0)
 
-  List(maxConcurrentThreads ?: elements.size) {
+  List(maxConcurrentThreads ?: elements.size) { threadIndex ->
 
     Thread {
 
@@ -40,7 +42,7 @@ fun <T, R> Iterable<T>.pmap(maxConcurrentThreads: Int? = null, transform: (T) ->
 
         sem?.acquire()
 
-        results[elmIndex] = transform(elements[elmIndex])
+        results[elmIndex] = transform(threadIndex, elements[elmIndex])
         elmIndex = nextElmIndex.getAndIncrement()
 
         sem?.release()
@@ -52,3 +54,15 @@ fun <T, R> Iterable<T>.pmap(maxConcurrentThreads: Int? = null, transform: (T) ->
 
   return elements.indices.map { elmIndex -> results.getValue(elmIndex) }
 }
+
+/**
+ * Map the elements of this iterable executing the [transform] function in parallel threads and collecting the results.
+ * If given, at max [maxConcurrentThreads] threads are executed in parallel.
+ *
+ * The [transform] function receives the current element as argument.
+ *
+ * @param maxConcurrentThreads the max number of concurrent threads at a time
+ * @param transform the transform function applied to each element of this collection
+ */
+fun <T, R> Iterable<T>.pmap(maxConcurrentThreads: Int? = null, transform: (T) -> R): List<R> =
+  this.pmapIndexed(maxConcurrentThreads) { _, elm -> transform(elm) }
