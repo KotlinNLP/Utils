@@ -145,6 +145,15 @@ fun String.toByteList(charset: Charset = Charsets.UTF_8) =
   this.toByteArray(charset).toList()
 
 /**
+ * Tokenize this string by whitespaces and convert each word to title case (only the first char to upper case).
+ *
+ * @return a copy of this string with each word converted to title case
+ */
+fun String.toTitleCase(): String = this.split(Regex.whitespaces).joinToString(" ") {
+  it[0].toUpperCase() + it.substring(1, it.length).toLowerCase()
+}
+
+/**
  * Return the number with the specified number of decimals.
  *
  * @param numDecimalPlaces the number of decimals
