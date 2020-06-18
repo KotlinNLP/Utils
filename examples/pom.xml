@@ -15,7 +15,7 @@
         <kotlin.version>1.3.31</kotlin.version>
         <xenocom.version>0.0.5</xenocom.version>
         <argparser.version>2.0.7</argparser.version>
-        <utils.version>2.1.4</utils.version>
+        <utils.version>2.1.5</utils.version>
     </properties>
 
     <repositories>
