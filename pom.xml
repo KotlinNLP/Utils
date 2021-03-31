@@ -61,7 +61,7 @@
         <dokka.version>0.9.13</dokka.version>
         <surfire.version>2.22.0</surfire.version>
         <spek.version>2.0.5</spek.version>
-        <google-guava.version>24.1.1-jre</google-guava.version>
+        <google-guava.version>29.0-jre</google-guava.version>
         <lmdbjava.version>0.6.3</lmdbjava.version>
         <slf4j.version>1.7.21</slf4j.version>
         <klaxon.version>5.2</klaxon.version>
